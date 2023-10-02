@@ -1,0 +1,30 @@
+version: '3.9'
+services:
+  nestapp:
+    container_name: nestapp
+    image: mwfelton/nestapp:1.0.0
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - DB_TYPE=postgres
+      - PG_USER=creator
+      - PG_PASSWORD=code
+      - PG_DB=ee-server
+      - PG_PORT=5432
+      - PG_HOST=127.0.0.1
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: ee-database
+    environment:
+      POSTGRES_USER: creator
+      POSTGRES_PASSWORD: code
+      POSTGRES_DB: ee-server
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata: {}
